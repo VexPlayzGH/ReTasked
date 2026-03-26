@@ -1,6 +1,6 @@
-RETASKED ToDo App
+|||   RETASKED ToDo App   |||
 
-// This project is at an early state and may receive updates.
+// This project is in an early state and may receive updates.
 
 ReTasked is a Terminal UI App built using the Ratatui framework for Rust. The executable only works on Windows.
 Once you run it, follow the instructions:
