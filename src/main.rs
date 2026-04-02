@@ -1,6 +1,9 @@
 use color_eyre::eyre::{Ok, Result};
 use ratatui::{
-    DefaultTerminal, Frame, crossterm::event::{self, Event, KeyEvent}, layout::{Alignment, Constraint, Layout}, prelude::Direction, style::{Color, Modifier, Style, Stylize}, text::ToSpan, widgets::{Block, BorderType, Borders, List, ListItem, ListState, Padding, Paragraph, Widget}};
+    DefaultTerminal, Frame, crossterm::event::{self, Event, KeyEvent},
+    layout::{Alignment, Constraint, Layout}, prelude::Direction,
+    style::{Color, Modifier, Style, Stylize},
+    text::ToSpan, widgets::{Block, BorderType, Borders, List, ListItem, ListState, Padding, Paragraph, Widget}};
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::{BufRead, BufReader};
@@ -144,7 +147,7 @@ fn handle_key(key: KeyEvent, app_state: &mut AppState) -> bool { // Handles K/B 
             }            
         },
         event::KeyCode::Char(char) => match char {
-            'c' | 'C' => {
+            'o' | 'O' => {
                 if key.kind == event::KeyEventKind::Press {
                     app_state.items.clear();
                     match write_file("output.txt", "") {
@@ -188,6 +191,16 @@ fn handle_key(key: KeyEvent, app_state: &mut AppState) -> bool { // Handles K/B 
                 }
             },
             _ => {},
+        },
+        event::KeyCode::Up => {
+            if key.kind == event::KeyEventKind::Press {
+                app_state.list_state.select_previous();
+            }
+        },
+        event::KeyCode::Down => {
+            if key.kind == event::KeyEventKind::Press {
+                app_state.list_state.select_next();
+            }
         },
         _ => {},
     }
@@ -238,8 +251,8 @@ fn render(frame: &mut Frame, app_state: &mut AppState) { // renders all widgets
                 .border_type(BorderType::Rounded))
             .render(border_area, frame.buffer_mut());
         frame.render_widget(
-            Paragraph::new("  [VIEW MODE]\n\n  A - Add\n  D - Delete\n  J - Select previous\n  \
-            K - Select next\n  S - Save list\n  C - Clear list\n  Enter - Mark as complete\n  Esc - Exit program\n\n")
+            Paragraph::new("  [VIEW MODE]\n\n  A - Add\n  D - Delete\n  J / UpArrow - Select previous\n  \
+            K / DownArrow - Select next\n  S - Save list\n  O - Clear list\n  Enter - Mark as complete\n  Esc - Exit program\n\n")
                 .block(
                     Block::new()
                         .borders(Borders::ALL)
